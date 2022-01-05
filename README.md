@@ -16,11 +16,13 @@ Nous avons choisi comme hébergeur Scalingo pour l'application, le guide suivant
 
 Tout d'abord nous allons créer une application Scalingo
 * Rendez-vous sur le dashboard de Scalingo, rubrique apps (https://dashboard.scalingo.com/apps) puis cliquez sur "Create an application"
-> !Screenshot!
+![dashboard](images\scalingo_dashboard.png)
 * Nommez l'application et appuyez sur "Create App"
-> !Screenshot!
+![basic_info](images\scalingo_basic_info.png)
 * Cliquez sur la méthode de synchronisation du code (GitHub à priori) ; sélectionnez votre repository mirroir ; Assurez-vous que "enable automatic deploy" est cochée ; sélectionnez la branche "Production" ; Validez
-> !Screenshot!
+![deployment](images\scalingo_deployment.png)
+![github](images\scalingo_github.png)
+![end](images\scalingo_end.png)
 * Appuyez sur "Finish"
 
 ### Boot l'application
