@@ -50,11 +50,11 @@ Tout d'abord nous allons créer une application Scalingo
 * Rendez-vous sur le dashboard de Scalingo, rubrique apps (https://dashboard.scalingo.com/apps) puis cliquez sur "Create an application"
 ![dashboard](images/scalingo_dashboard.png)
 * Nommez l'application et appuyez sur "Create App"
-![basic_info](images\scalingo_basic_info.png)
+![basic_info](images/scalingo_basic_info.png)
 * Cliquez sur la méthode de synchronisation du code (GitHub à priori) ; sélectionnez votre repository mirroir et la branche qui vous intéresse; Assurez-vous que "enable automatic deploy" est cochée ; sélectionnez la branche "Production" ; Validez
-![deployment](images\scalingo_deployment.png)
-![github](images\scalingo_github.png)
-![end](images\scalingo_end.png)
+![deployment](images/scalingo_deployment.png)
+![github](images/scalingo_github.png)
+![end](images/scalingo_end.png)
 * Appuyez sur "Finish"
 
 ### Boot l'application
