@@ -12,14 +12,14 @@ Nous avons choisi comme hébergeur Scalingo pour l'application, le guide suivant
 * Créez un repository GitHub mirroir (https://docs.github.com/en/repositories/creating-and-managing-repositories/duplicating-a-repository#mirroring-a-repository) du repository suivant : https://github.com/moussmo/testScalingo.git
 > Cela permettra d'importer le projet GitHub directement dans Scalingo, ce qui est impossible si vous n'êtes pas le propriétaire du repository GitHub
 
-### Importer le projet GitHub dans Scalingo
+### Création de l'application
 
 Tout d'abord nous allons créer une application Scalingo
 * Rendez-vous sur le dashboard de Scalingo, rubrique apps (https://dashboard.scalingo.com/apps) puis cliquez sur "Create an application"
 ![dashboard](images\scalingo_dashboard.png)
 * Nommez l'application et appuyez sur "Create App"
 ![basic_info](images\scalingo_basic_info.png)
-* Cliquez sur la méthode de synchronisation du code (GitHub à priori) ; sélectionnez votre repository mirroir ; Assurez-vous que "enable automatic deploy" est cochée ; sélectionnez la branche "Production" ; Validez
+* Cliquez sur la méthode de synchronisation du code (GitHub à priori) ; sélectionnez votre repository mirroir et la branche qui vous intéresse; Assurez-vous que "enable automatic deploy" est cochée ; sélectionnez la branche "Production" ; Validez
 ![deployment](images\scalingo_deployment.png)
 ![github](images\scalingo_github.png)
 ![end](images\scalingo_end.png)
@@ -27,7 +27,14 @@ Tout d'abord nous allons créer une application Scalingo
 
 ### Boot l'application
 
-!Mohammed si tu veux expliquer!
+* Lorsque vous créez l'application et si le lien du dépôt GitHub joint est valide, elle est automatiquement déployée. 
+* Si vous avez coché l'option 'Enable Automatic Deploy' comme suggéré plus haut, à chaque fois que vous 'pushez' vos commits sur votre branche, l'application est redéployée automatiquement.
+* Vous pouvez déployer manuellement votre application en vous rendant dans l'onglet 'Deploy', partie 'Manuel Deployments' et en appuyant sur le bouton 'Trigger Deployment'.
+
+* Scalingo vous offre des logs de déploiements dans l'onglet 'Deploy' partie 'History'/ Parmi les messages d'erreurs les plus communs:
+	* "Build Error: Invalid return code from buildpack*: ceci signifie que l'algorithme de Scalingo n'arrive pas à détecter les technologies utilisées dans le projet.
+	* "Missing Procfile": assurez-vous qu'un procfile est présent à la racine du projet.
+
 
 # Installation du projet - Développement
 
