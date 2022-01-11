@@ -11,18 +11,26 @@ api_key = "76492f1cc7209a0e7210f0f223555b6f"
 
 port = os.getenv("PORT")
 app = Flask(__name__)
-route_accueil="/"
-route_weather="/weather"
+
 
 app.config.from_object(Config)
 db.init_app(app)
+
+route_accueil="/"
+route_weather="/weather"
+route_calendar="/calendar"
+route_users="/users"
 
 with app.test_request_context():
     init_database()
 
 @app.route('/',methods=['GET'])
 def index():
-    return render_template('index.html', route_accueil=route_accueil,route_weather=route_weather)
+    return render_template('index.html', 
+    route_accueil=route_accueil,
+    route_weather=route_weather,
+    route_calendar=route_calendar,
+    route_users=route_users)
 
 @app.route('/weather', methods=['GET','POST'])
 def weather():
@@ -34,14 +42,26 @@ def weather():
         resultat = r.json()
         temp_min = resultat['main']['temp_min'] - 273.15
         temp_max = resultat['main']['temp_max'] - 273.15
-        return render_template('weather.html',resultat = "A " + city +", Température min : " + str(int(temp_min)) + "°C ; Température max : " + str(int(temp_max)) +"°C" )
+        return render_template('weather.html',resultat = "A " + city +", Température min : " + str(int(temp_min)) + "°C ; Température max : " + str(int(temp_max)) +"°C" , 
+            route_accueil=route_accueil,
+            route_weather=route_weather,
+            route_calendar=route_calendar,
+            route_users=route_users)
     #return json.dumps({'temperature':(temp_min + temp_max) / 2})
     else:
-        return render_template('weather.html',resultat = "", route_accueil=route_accueil,route_weather=route_weather)
+        return render_template('weather.html',resultat = "", 
+        route_accueil=route_accueil,
+        route_weather=route_weather,
+        route_calendar=route_calendar,
+        route_users=route_users)
 
 @app.route('/calendar', methods=['GET'])
 def calendar():
-    return render_template('calendar.html',resultat = "", route_accueil=route_accueil,route_weather=route_weather)
+    return render_template('calendar.html',resultat = "", 
+    route_accueil=route_accueil,
+    route_weather=route_weather,
+    route_calendar=route_calendar,
+    route_users=route_users)
 
 @app.route('/user/<username>', methods=['GET'])
 def user(username=None):
@@ -57,7 +77,11 @@ def users():
     result=""
     for user in users:
         result+=user.username
-    return render_template('index.html',result=result)
+    return render_template('index.html',result=result, 
+    route_accueil=route_accueil,
+    route_weather=route_weather,
+    route_calendar=route_calendar,
+    route_users=route_users)
 
 if __name__ == '__main__':
     print("Webhook démarré")
