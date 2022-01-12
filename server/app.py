@@ -2,7 +2,9 @@ from flask import Flask, render_template, request,redirect,url_for
 import os
 import requests
 import json
+import datetime
 
+import utils
 import database.models
 from config.config import Config
 from database.init import db,init_database
@@ -63,6 +65,59 @@ def calendar():
     route_calendar=route_calendar,
     route_users=route_users)
 
+@app.route('/calendar/event',methods=['GET','POST'])
+@app.route('/calendar/event/<id>',methods=['GET','POST'])
+def event(id=None):
+    #Datetime doc : https://www.w3schools.com/python/python_datetime.asp
+    event = database.models.Event.query.filter_by(event_id=id).first()
+    users = database.models.User.query.all()
+    form = request.form
+    errors=[]
+    #errors=["broo"]
+    if request.method=='POST':
+        if not event:
+            event = database.models.Event()
+        title= form.get("title_event")
+        debut_heure= int(form.get("start_hour"))
+        debut_min= int(form.get("start_min"))
+        fin_heure= int(form.get("end_hour"))
+        fin_min= int(form.get("end_min"))
+        date_str=form.get("date")
+        date_d,date_m,date_y=utils.parse_date(date_str)
+
+        event.title=title
+        event.event_start=datetime.datetime(date_y,date_m,date_d,debut_heure,debut_min)
+        event.event_end=datetime.datetime(date_y,date_m,date_d,fin_heure,fin_min)
+        event.participants="Bro"
+        if len(errors)==0:
+            db.session.add(event)
+            db.session.commit()
+            return redirect(url_for('calendar'))
+        else:
+            return render_template('event.html',resultat = "", errors=errors, users=users,
+            route_accueil=route_accueil,
+            route_weather=route_weather,
+            route_calendar=route_calendar,
+            route_users=route_users)
+    else:
+        return render_template('event.html',resultat = "", users=users, 
+            route_accueil=route_accueil,
+            route_weather=route_weather,
+            route_calendar=route_calendar,
+            route_users=route_users)
+
+@app.route('/calendar/events', methods=['GET'])
+def list_events():
+    events = database.models.Event.query.all()
+    result = ""
+    for event in events:
+        result+= event.title
+    return render_template('index.html',result=result, 
+    route_accueil=route_accueil,
+    route_weather=route_weather,
+    route_calendar=route_calendar,
+    route_users=route_users)
+
 @app.route('/user/<username>', methods=['GET'])
 def user(username=None):
     user=database.models.User()
@@ -73,7 +128,7 @@ def user(username=None):
 
 @app.route('/users', methods=['GET'])
 def users():
-    users=database.models.User.query.order_by(database.models.User.id.desc()).all()
+    users=database.models.User.query.order_by(database.models.User.user_id.desc()).all()
     result=""
     for user in users:
         result+=user.username
@@ -84,5 +139,4 @@ def users():
     route_users=route_users)
 
 if __name__ == '__main__':
-    print("Webhook démarré")
     app.run(host='0.0.0.0', port=port)
