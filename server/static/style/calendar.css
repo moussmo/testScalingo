@@ -61,11 +61,12 @@ html .fc,
 
 /* Header
 ------------------------------------------------------------------------*/
-
+/*
 .fc-header td {
 	white-space: nowrap;
 	padding: 15px 10px 0px;
 }
+*/
 
 .fc-header-left {
 	width: 25%;

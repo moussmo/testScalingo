@@ -10,16 +10,16 @@ class Event(db.Model):
     #Alertes, périodicité..
     #Catégories (séminaire...)
 
-    event_id = db.Column(db.Integer, primary_key=True)
-    event_start = db.Column(db.DateTime, nullable=False)
-    event_end = db.Column(db.DateTime, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    start = db.Column(db.DateTime, nullable=False)
+    end = db.Column(db.DateTime, nullable=False)
     #created_date = db_alchemy.Column(db_alchemy.DateTime, nullable=False)
     #last_modified_date = db_alchemy.Column(db_alchemy.DateTime, nullable=False)
     #event_owner = db_alchemy.Column(db_alchemy.String(50), nullable=False)
     title = db.Column(db.String(50), nullable=False)
     #details = db.Column(db.Text(1000))
 
-    participants = db.Column(db.Text) #format : <id_user_1>;<id_user_2>;...;<id_user_n>
+    participants = db.Column(db.String(10000)) #format : <id_user_1>;<id_user_2>;...;<id_user_n>
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -27,5 +27,4 @@ class Event(db.Model):
 class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-
-    events = db.Column(db.Text) #format : <id_event_1>;<id_event_2>;...;<id_event_n>
+    events = db.Column(db.String(10000)) #format : <id_event_1>;<id_event_2>;...;<id_event_n>

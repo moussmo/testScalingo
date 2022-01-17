@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,redirect,url_for
+from flask import Flask, render_template, request,redirect,url_for, jsonify
 import os
 import requests
 import json
@@ -59,17 +59,43 @@ def weather():
 
 @app.route('/calendar', methods=['GET'])
 def calendar():
-    return render_template('calendar.html',resultat = "", 
+    user = database.models.User.query.filter_by(user_id=1).first()
+    print(user)
+    print(user.events)
+    events_id = user.events.split(";")
+    events=[]
+    for event_id in events_id:
+        event = database.models.Event.query.filter_by(id=event_id).first()
+        #start_date = event.
+        events.append(event.as_dict())
+    return render_template('calendar.html',resultat = "", #events=str(events), 
     route_accueil=route_accueil,
     route_weather=route_weather,
     route_calendar=route_calendar,
     route_users=route_users)
 
+@app.route('/post_events',methods=['POST'])
+def post_events():
+    form = request.form
+    user_id = form["user_id"]
+    user = database.models.User.query.filter_by(user_id=user_id).first()
+    print(user)
+    print(user.events)
+    events_id = user.events.split(";")
+    events=[]
+    for event_id in events_id:
+        event = database.models.Event.query.filter_by(id=event_id).first()
+        #start_date = event.
+        events.append(event.as_dict())
+    print(user_id)
+    print(events)
+    return jsonify(events)
+
 @app.route('/calendar/event',methods=['GET','POST'])
 @app.route('/calendar/event/<id>',methods=['GET','POST'])
 def event(id=None):
     #Datetime doc : https://www.w3schools.com/python/python_datetime.asp
-    event = database.models.Event.query.filter_by(event_id=id).first()
+    event = database.models.Event.query.filter_by(id=id).first()
     users = database.models.User.query.all()
     form = request.form
     errors=[]
@@ -84,14 +110,43 @@ def event(id=None):
         fin_min= int(form.get("end_min"))
         date_str=form.get("date")
         date_d,date_m,date_y=utils.parse_date(date_str)
+        participants_id="1"
+
 
         event.title=title
-        event.event_start=datetime.datetime(date_y,date_m,date_d,debut_heure,debut_min)
-        event.event_end=datetime.datetime(date_y,date_m,date_d,fin_heure,fin_min)
-        event.participants="Bro"
+        event.start=datetime.datetime(date_y,date_m,date_d,debut_heure,debut_min)
+        event.end=datetime.datetime(date_y,date_m,date_d,fin_heure,fin_min)
+        if participants_id!="":
+            ids = participants_id.split(";")
+            if event.participants:
+                for id in ids:
+                    if id not in event.participants.split(";"):
+                        event.participants = event.participants + ";" + str(id)
+            else:
+                event.participants=participants_id
+        print("event.participants : " + event.participants)
+        
         if len(errors)==0:
             db.session.add(event)
             db.session.commit()
+
+            for participant_id in participants_id.split(";"):
+                participant = database.models.User.query.filter_by(user_id=participant_id).first()
+                print("participant.username : " +participant.username)
+                print("event.id : " + str(event.id))
+                result=participant.events
+                if result:
+                    ids = participant.events.split(";")
+                    print("ids in participant commit : " +str(ids))
+                    if not event.id in ids:
+                        result = result + ";" + str(event.id)
+                else:
+                    result = str(event.id)
+                participant.events=result
+                print("result : " +result)
+                db.session.add(participant)
+                db.session.commit()
+
             return redirect(url_for('calendar'))
         else:
             return render_template('event.html',resultat = "", errors=errors, users=users,
@@ -131,7 +186,7 @@ def users():
     users=database.models.User.query.order_by(database.models.User.user_id.desc()).all()
     result=""
     for user in users:
-        result+=user.username
+        result+=user.username + str(user.user_id)
     return render_template('index.html',result=result, 
     route_accueil=route_accueil,
     route_weather=route_weather,
