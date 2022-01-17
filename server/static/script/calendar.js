@@ -61,19 +61,19 @@
         // locale
         isRTL: false,
         firstDay: 0,
-        monthNames: ['January','February','March','April','May','June','July','August','September','October','November','December'],
-        monthNamesShort: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-        dayNames: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-        dayNamesShort: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+        monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+        monthNamesShort: ['Jan','Fev','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Dec'],
+        dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+        dayNamesShort: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
         buttonText: {
             prev: "<span class='fc-text-arrow'>‹</span>",
             next: "<span class='fc-text-arrow'>›</span>",
             prevYear: "<span class='fc-text-arrow'>«</span>",
             nextYear: "<span class='fc-text-arrow'>»</span>",
-            today: 'today',
-            month: 'month',
-            week: 'week',
-            day: 'day'
+            today: "Aujourd'hui",
+            month: 'Mois',
+            week: 'Semaine',
+            day: 'Jour'
         },
         
         // jquery-ui theming
@@ -1559,6 +1559,10 @@
                     }
                 }
             }
+            else if (c == '+') {
+                //format hours
+                res += "h"
+            }
             else if (c == '(') {
                 for (i2=i+1; i2<len; i2++) {
                     if (format.charAt(i2) == ')') {
@@ -1592,6 +1596,7 @@
                 date = date1;
                 otherDate = date2;
             }
+
             else {
                 for (i2=len; i2>i; i2--) {
                     if (formatter = dateFormatters[format.substring(i, i2)]) {
@@ -1618,8 +1623,8 @@
         ss	: function(d)	{ return zeroPad(d.getSeconds()) },
         m	: function(d)	{ return d.getMinutes() },
         mm	: function(d)	{ return zeroPad(d.getMinutes()) },
-        h	: function(d)	{ return d.getHours() % 12 || 12 },
-        hh	: function(d)	{ return zeroPad(d.getHours() % 12 || 12) },
+        h	: function(d)	{ return d.getHours() },
+        hh	: function(d)	{ return zeroPad(d.getHours()) },
         H	: function(d)	{ return d.getHours() },
         HH	: function(d)	{ return zeroPad(d.getHours()) },
         d	: function(d)	{ return d.getDate() },
@@ -1632,11 +1637,11 @@
         MMMM: function(d,o)	{ return o.monthNames[d.getMonth()] },
         yy	: function(d)	{ return (d.getFullYear()+'').substring(2) },
         yyyy: function(d)	{ return d.getFullYear() },
-        t	: function(d)	{ return d.getHours() < 12 ? 'a' : 'p' },
+        t	: function(d)	{ return d.getHours() < 12 ? 'h' : 'h' },
         tt	: function(d)	{ return d.getHours() < 12 ? 'am' : 'pm' },
         T	: function(d)	{ return d.getHours() < 12 ? 'A' : 'P' },
         TT	: function(d)	{ return d.getHours() < 12 ? 'AM' : 'PM' },
-        u	: function(d)	{ return formatDate(d, "yyyy-MM-dd'T'HH:mm:ss'Z'") },
+        u	: function(d)	{ return formatDate(d, "yyyy-MM-dd'T'HH+mm:ss'Z'") },
         S	: function(d)	{
             var date = d.getDate();
             if (date > 10 && date < 20) {
@@ -2759,7 +2764,7 @@
         defaultEventMinutes: 120,
         axisFormat: 'h(:mm)tt',
         timeFormat: {
-            agenda: 'h:mm{ - h:mm}'
+            agenda: 'h+mm{ - h+mm}'
         },
         dragOpacity: {
             agenda: .5
