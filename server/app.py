@@ -45,6 +45,10 @@ def index():
 @app.route('/login')
 def login():
     disconnected = bool(request.args.get('disconnected'))
+    unsubscribed = bool(request.args.get('unsubscribed'))
+
+    if unsubscribed is True:
+        flash('Compte supprimé avec succès.')
     if disconnected is True:
         flash('Vous vous êtes déconnecté avec succès.')
     return render_template('login.html')
@@ -92,6 +96,14 @@ def logout():
     logout_user()
     return redirect(url_for('login', disconnected=True))
 
+@app.route('/unsubscribe', methods=['POST'])
+@login_required
+def unsubscribe():
+    current_user_id = current_user.user_id
+    logout_user()
+    User.query.filter_by(user_id=current_user_id).delete()
+    db.session.commit()
+    return redirect(url_for('login', unsubscribed=True))
 @app.route('/calendar', methods=['GET'])
 def calendar():
     user = database.models.User.query.filter_by(user_id=1).first()
