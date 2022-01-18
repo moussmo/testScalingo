@@ -85,7 +85,6 @@ def post_events():
     events=[]
     for event_id in events_id:
         event = database.models.Event.query.filter_by(id=event_id).first()
-        #start_date = event.
         events.append(event.as_dict())
     print(user_id)
     print(events)
@@ -110,7 +109,7 @@ def event(id=None):
         fin_min= int(form.get("end_min"))
         date_str=form.get("date")
         date_d,date_m,date_y=utils.parse_date(date_str)
-        participants_id="1"
+        participants_id=str(form.get("participants_id_name"))
 
 
         event.title=title
@@ -124,7 +123,7 @@ def event(id=None):
                         event.participants = event.participants + ";" + str(id)
             else:
                 event.participants=participants_id
-        print("event.participants : " + event.participants)
+        print("event.participants : " + str(event.participants))
         
         if len(errors)==0:
             db.session.add(event)
@@ -132,7 +131,7 @@ def event(id=None):
 
             for participant_id in participants_id.split(";"):
                 participant = database.models.User.query.filter_by(user_id=participant_id).first()
-                print("participant.username : " +participant.username)
+                print("participant.username : " + participant.username)
                 print("event.id : " + str(event.id))
                 result=participant.events
                 if result:

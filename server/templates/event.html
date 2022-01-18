@@ -103,7 +103,6 @@
     <option value="21">21</option>
     <option value="22">22</option>
     <option value="23">23</option>
-    <option value="24">24</option>
   </select>
   H
   <select class="form-select" aria-label="Default select example" name="end_min">
@@ -126,17 +125,83 @@
 <div class="row">
   {%for user in users%}
 <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="{{user.user_id}}" id="flexCheckDefault" name=>
-  <label class="form-check-label" for="flexCheckDefault">
+  <input class="form-check-input participant-check" type="checkbox" value="{{user.user_id}}" id="{{user.user_id}}">
+  <label class="form-check-label" for="{{user.user_id}}">
     {{user.username}}
   </label>
 </div>
 {%endfor%}
+<input value="" class="participants_id" name="participants_id_name" type="hidden">
 </div>
 
   <button type="submit" class="btn btn-primary btn-lg">Valider</button>
   </form>
   {{resultat}}
 </div>
+
+<script>
+  $(".participant-check").change(function(event) {
+    //console.log("--------------")
+    res=""
+
+    //retrieve which user is being added or removed
+    checkbox = event.target
+    checked = checkbox.checked
+    participant_id = checkbox.value.toString()
+    already_in = false
+    //console.log("id à modifier")
+    //console.log(participant_id)
+    
+    //retrieve all participants already crossed
+    input = $(".participants_id")
+
+    if (checked) res=participant_id
+
+    //console.log("res before if")
+    //console.log(res)
+
+    if (input.val()!="") {
+      participants = input.val().split(";")
+      //console.log("participants avant for")
+      //console.log(participants)
+      
+      for (var i=0;i<participants.length;i++) {
+          id = participants[i]
+          console.log("boucle for, id = ")
+          console.log(id)
+          if (id == participant_id) {
+            already_in = true
+            if (checked) {
+              if (res == "") {
+                res = res + id
+              }
+              else {
+                res = res + ";" + id
+                  
+              }
+            }
+          }
+          else {
+            if (res == "") {
+              res = res + id
+            }
+            else {
+              res = res + ";" + id
+            }
+            
+          }
+        }
+    
+    }
+
+    input.val(res)
+
+    console.log("participants à présent : " )
+    console.log(input.val())
+
+  })
+
+</script>
 {%endblock%}
+
 
