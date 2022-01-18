@@ -27,8 +27,10 @@ class Event(db.Model):
 
 class User(UserMixin, db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
     events = db.Column(db.String(10000)) #format : <id_event_1>;<id_event_2>;...;<id_event_n>
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
+
+    def get_id(self):
+        return self.user_id

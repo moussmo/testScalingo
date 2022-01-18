@@ -4,8 +4,9 @@ import requests
 import json
 import datetime
 
-from flask_login import login_user, logout_user, login_required, LoginManager, login_manager, current_user
+from flask_login import login_user, logout_user, login_required, LoginManager, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+
 
 import utils
 import database.models
@@ -17,8 +18,8 @@ api_key = "76492f1cc7209a0e7210f0f223555b6f"
 
 port = os.getenv("PORT")
 app = Flask(__name__)
-
 app.config.from_object(Config)
+
 db.init_app(app)
 
 route_accueil="/"
@@ -165,7 +166,7 @@ def event(id=None):
 
             for participant_id in participants_id.split(";"):
                 participant = database.models.User.query.filter_by(user_id=participant_id).first()
-                print("participant.username : " + participant.username)
+                print("participant.name : " + participant.name)
                 print("event.id : " + str(event.id))
                 result=participant.events
                 if result:
@@ -206,10 +207,10 @@ def list_events():
     route_calendar=route_calendar,
     route_users=route_users)
 
-@app.route('/user/<username>', methods=['GET'])
-def user(username=None):
+@app.route('/user/<name>', methods=['GET'])
+def user(name=None):
     user=database.models.User()
-    user.username=username
+    user.name=name
     db.session.add(user)
     db.session.commit()
     return redirect(url_for('index'))
@@ -219,7 +220,7 @@ def users():
     users=database.models.User.query.order_by(database.models.User.user_id.desc()).all()
     result=""
     for user in users:
-        result+=user.username + str(user.user_id)
+        result+=user.name + str(user.user_id)
     return render_template('index.html',result=result, 
     route_accueil=route_accueil,
     route_weather=route_weather,
