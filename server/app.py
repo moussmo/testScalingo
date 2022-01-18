@@ -46,7 +46,9 @@ def index():
 def login():
     disconnected = bool(request.args.get('disconnected'))
     unsubscribed = bool(request.args.get('unsubscribed'))
-
+    already_connected = bool(request.args.get('already_connected'))
+    if already_connected is True:
+        flash('Vous êtes déjà connecté.')
     if unsubscribed is True:
         flash('Compte supprimé avec succès.')
     if disconnected is True:
@@ -55,6 +57,9 @@ def login():
 
 @app.route('/login', methods=['POST'])
 def login_post():
+    if current_user.get_id() is not None:
+        return redirect(url_for('login', already_connected=True))
+
     email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
