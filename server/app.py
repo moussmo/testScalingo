@@ -1,24 +1,23 @@
-from flask import Flask, render_template, request,redirect,url_for, jsonify, flash
 import os
 import requests
 import json
 import datetime
 
-from flask_login import login_user, logout_user, login_required, LoginManager, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
-
-
 import utils
 import database.models
 from config.config import Config
-from database.init import db, init_database
 from database.models import User
+from database.init import db, init_database
+from extension_blueprint import extensions_blueprint
 
-api_key = "76492f1cc7209a0e7210f0f223555b6f"
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, render_template, request,redirect,url_for, jsonify, flash
+from flask_login import login_user, logout_user, login_required, LoginManager, current_user
 
 port = os.getenv("PORT")
 app = Flask(__name__)
 app.config.from_object(Config)
+app.register_blueprint(extensions_blueprint)
 
 db.init_app(app)
 
@@ -40,7 +39,7 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return redirect(url_for('login'))
+    return render_template('index.html')
 
 @app.route('/login')
 def login():
@@ -110,6 +109,7 @@ def unsubscribe():
     db.session.commit()
     return redirect(url_for('login', unsubscribed=True))
 
+
 @app.route('/calendar', methods=['GET'])
 def calendar():
     user = database.models.User.query.filter_by(user_id=1).first()
@@ -144,7 +144,7 @@ def post_events():
     return jsonify(events)
 
 @app.route('/calendar/event',methods=['GET','POST'])
-@app.route('/calendar/event/<id>',methods=['GET','POST'])
+@app.route('/calendar/event/<id>', methods=['GET', 'POST'])
 def event(id=None):
     #Datetime doc : https://www.w3schools.com/python/python_datetime.asp
     event = database.models.Event.query.filter_by(id=id).first()

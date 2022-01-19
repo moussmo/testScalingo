@@ -40,10 +40,8 @@ class Extension:
         tabs = self.tabs + [tab]
         return Extension(self.extension_name, tabs)
 
-
 if __name__=='__main__':
     extensions = []
 
-    extension1 = Extension('myExtension').addCalendar(name='calendar').addInternship(name='Fiche de stage vide')
 
-    breakpoint()
+
