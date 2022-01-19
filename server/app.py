@@ -1,3 +1,4 @@
+from sys import intern
 from flask import Flask, render_template, request,redirect,url_for, jsonify, flash
 from flask_login import login_user, logout_user, login_required, LoginManager, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,14 +8,16 @@ import json
 import datetime
 
 import utils
-import database.models
+
 from config.config import Config
+from database.models import *
 from database.init import db,init_database
 
 api_key = "76492f1cc7209a0e7210f0f223555b6f"
 
 port = os.getenv("PORT")
 app = Flask(__name__)
+
 app.config.from_object(Config)
 
 db.init_app(app)
@@ -252,6 +255,26 @@ def users():
     route_weather=route_weather,
     route_calendar=route_calendar,
     route_users=route_users)
+
+@app.route('/internships', methods=["GET"])
+def internships_main():
+    internships=get_internships_by_student('Test')
+    return render_template('internships_main.html', results=internships)
+
+@app.route('/internships/new', methods=["GET", "POST"])
+@app.route('/internships/new/<id>', methods=["GET", "POST"])
+def internship_form(id=None):
+    print("id:", id)
+    internship = get_internship_by_id(id)
+    if (request.method == 'POST'):
+        if internship is None:
+            internship = Internship()
+        internship.title = request.form.get("title", "")
+        internship.year = request.form.get("year", "")
+        internship.student = "Test"
+        add_internship(internship)
+        return redirect(url_for('internships_main'))
+    return render_template('internships_form.html', intern=internship)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)

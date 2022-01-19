@@ -1,0 +1,23 @@
+{%extends "base.html"%}
+
+{%block body%}
+<div style = "padding-left: 50px;">
+    <label>Nouveau stage</label>
+  <form action="" method="post" class="form-example" >
+    <div class="row">
+        <div class="form-group">
+        <input class="form-control" placeholder="Intitulé du stage" name = "title" value="{{ intern.title }}">
+        <div style ="padding: 10px;">
+            <label>Année</label>
+            <select name = "year">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+            </select>
+        </div>
+        </div>
+    </div>
+  <button type="submit" class="btn btn-primary btn-lg">Valider</button>
+  </form>
+</div>
+{%endblock%}
