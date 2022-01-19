@@ -8,11 +8,11 @@ Séparation des tâches et démarrage du code.
 
 * Début de la première version de la partie "fiches de stage"
 
-## Mohamed
+### Mohamed
 
 * Authentification
 
-## Simon
+### Simon
 
 * Début de la partie "emploi du temps"
 
@@ -22,10 +22,10 @@ Séparation des tâches et démarrage du code.
 
 * Fin de la première version de la partie "fiches de stage"
 
-## Mohamed
+### Mohamed
 
 * Réflexion sur les extensions
 
-## Simon
+### Simon
 
 * Avancée de la partie "emploi du temps"
