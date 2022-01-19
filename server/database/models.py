@@ -1,3 +1,4 @@
+from sqlalchemy import true
 from database.init import db
 
 class Event(db.Model):
@@ -10,7 +11,7 @@ class Event(db.Model):
     #Alertes, périodicité..
     #Catégories (séminaire...)
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
     start = db.Column(db.DateTime, nullable=False)
     end = db.Column(db.DateTime, nullable=False)
     #created_date = db_alchemy.Column(db_alchemy.DateTime, nullable=False)

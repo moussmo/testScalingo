@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request,redirect,url_for, jsonify
+import flask_login
 import os
 import requests
 import json
@@ -94,13 +95,15 @@ def post_events():
 @app.route('/calendar/event/<id>',methods=['GET','POST'])
 def event(id=None):
     #Datetime doc : https://www.w3schools.com/python/python_datetime.asp
+    print(id)
     event = database.models.Event.query.filter_by(id=id).first()
+    print(event)
     users = database.models.User.query.all()
     form = request.form
     errors=[]
     #errors=["broo"]
     if request.method=='POST':
-        if not event:
+        if event is None:
             event = database.models.Event()
         title= form.get("title_event")
         debut_heure= int(form.get("start_hour"))
@@ -148,13 +151,13 @@ def event(id=None):
 
             return redirect(url_for('calendar'))
         else:
-            return render_template('event.html',resultat = "", errors=errors, users=users,
+            return render_template('event.html',resultat = "", errors=errors, users=users, id=id,
             route_accueil=route_accueil,
             route_weather=route_weather,
             route_calendar=route_calendar,
             route_users=route_users)
     else:
-        return render_template('event.html',resultat = "", users=users, 
+        return render_template('event.html',resultat = "", users=users, id=id,
             route_accueil=route_accueil,
             route_weather=route_weather,
             route_calendar=route_calendar,

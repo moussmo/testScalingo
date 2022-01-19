@@ -7,7 +7,7 @@
 <div style = "padding-left: 50px;">
   
   
-  <form action="" method="post" class="form-example" >
+  <form action="{{ url_for('event', id=id) }}"  method="post" class="form-example" >
     <div class="row">
     <div class="form-group">
       <label>Titre de l'événement</label>
@@ -123,15 +123,18 @@
 </div>
 
 <div class="row">
+  <div class="form-check">
   {%for user in users%}
-<div class="form-check">
+
   <input class="form-check-input participant-check" type="checkbox" value="{{user.user_id}}" id="{{user.user_id}}">
-  <label class="form-check-label" for="{{user.user_id}}">
+  <label class="form-check-label" style="padding-left: 15px;" for="{{user.user_id}}">
     {{user.username}}
   </label>
-</div>
+
 {%endfor%}
+</div>
 <input value="" class="participants_id" name="participants_id_name" type="hidden">
+
 </div>
 
   <button type="submit" class="btn btn-primary btn-lg">Valider</button>
