@@ -26,6 +26,7 @@ route_accueil="/"
 route_weather="/weather"
 route_calendar="/calendar"
 route_users="/users"
+route_internships="/internships"
 
 with app.test_request_context():
     init_database()
