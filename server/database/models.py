@@ -6,7 +6,7 @@ class Internship(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128))
     #TODO: student id (authentification)
-    student = db.Column(db.String(32))
+    student_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     year = db.Column(db.Integer)
 
 def add_internship(internship):

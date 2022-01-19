@@ -37,7 +37,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return database.models.User.query.get(int(user_id))
+    return User.query.get(int(user_id))
 
 @app.route('/',methods=['GET'])
 @login_required
@@ -63,7 +63,6 @@ def login():
     return render_template('login.html')
 
 
-
 @app.route('/login', methods=['POST'])
 def login_post():
     if current_user.get_id() is not None:
@@ -73,7 +72,7 @@ def login_post():
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
 
-    user = database.models.User.query.filter_by(email=email).first()
+    user = User.query.filter_by(email=email).first()
 
     if not user or not check_password_hash(user.password, password):
         flash('Vérifiez vos identifiants et réessayez.')
@@ -93,13 +92,13 @@ def signup_post():
     name = request.form.get('name')
     password = request.form.get('password')
 
-    user = database.models.User.query.filter_by(email=email).first()
+    user = User.query.filter_by(email=email).first()
 
     if user:
         flash('Email address already exists.')
         return redirect(url_for('signup'))
 
-    new_user = database.models.User(email=email, name=name, password=generate_password_hash(password, method='sha256'), events="")
+    new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'), events="")
 
     db.session.add(new_user)
     db.session.commit()
@@ -116,11 +115,9 @@ def logout():
 def unsubscribe():
     current_user_id = current_user.user_id
     logout_user()
-    database.models.User.query.filter_by(user_id=current_user_id).delete()
+    User.query.filter_by(user_id=current_user_id).delete()
     db.session.commit()
     return redirect(url_for('login', unsubscribed=True))
-
-
 
 @app.route('/calendar', methods=['GET'])
 @login_required
@@ -145,7 +142,7 @@ def post_events():
         events_id = user.events.split(";")
         events=[]
         for event_id in events_id:
-            event = database.models.Event.query.filter_by(id=event_id).first()
+            event = Event.query.filter_by(id=event_id).first()
             events.append(event.as_dict())
     else:
         events=[]
@@ -158,15 +155,15 @@ def post_events():
 def event(id=None):
     #Datetime doc : https://www.w3schools.com/python/python_datetime.asp
     print(id)
-    event = database.models.Event.query.filter_by(id=id).first()
+    event = Event.query.filter_by(id=id).first()
     print(event)
-    users = database.models.User.query.all()
+    users = User.query.all()
     form = request.form
     errors=[]
     #errors=["broo"]
     if request.method=='POST':
         if event is None:
-            event = database.models.Event()
+            event = Event()
         title= form.get("title_event")
         debut_heure= int(form.get("start_hour"))
         debut_min= int(form.get("start_min"))
@@ -195,7 +192,7 @@ def event(id=None):
             db.session.commit()
 
             for participant_id in participants_id.split(";"):
-                participant = database.models.User.query.filter_by(user_id=participant_id).first()
+                participant = User.query.filter_by(user_id=participant_id).first()
                 print("participant.name : " + participant.name)
                 print("event.id : " + str(event.id))
                 result=participant.events
@@ -227,7 +224,7 @@ def event(id=None):
 
 @app.route('/calendar/events', methods=['GET'])
 def list_events():
-    events = database.models.Event.query.all()
+    events = Event.query.all()
     result = ""
     for event in events:
         result+= event.title
@@ -239,7 +236,7 @@ def list_events():
 
 @app.route('/user/<name>', methods=['GET'])
 def user(name=None):
-    user=database.models.User()
+    user=User()
     user.name=name
     db.session.add(user)
     db.session.commit()
@@ -247,7 +244,7 @@ def user(name=None):
 
 @app.route('/users', methods=['GET'])
 def users():
-    users=database.models.User.query.order_by(database.models.User.user_id.desc()).all()
+    users=User.query.order_by(User.user_id.desc()).all()
     result=""
     for user in users:
         result+=user.name + str(user.user_id)
@@ -259,7 +256,7 @@ def users():
 
 @app.route('/internships', methods=["GET"])
 def internships_main():
-    internships=get_internships_by_student('Test')
+    internships=get_internships_by_student(current_user.user_id)
     return render_template('internships_main.html', results=internships)
 
 @app.route('/internships/new', methods=["GET", "POST"])
@@ -272,7 +269,7 @@ def internship_form(id=None):
             internship = Internship()
         internship.title = request.form.get("title", "")
         internship.year = request.form.get("year", "")
-        internship.student = "Test"
+        internship.student = current_user.user_id
         add_internship(internship)
         return redirect(url_for('internships_main'))
     return render_template('internships_form.html', intern=internship)
