@@ -109,6 +109,7 @@ def unsubscribe():
     User.query.filter_by(user_id=current_user_id).delete()
     db.session.commit()
     return redirect(url_for('login', unsubscribed=True))
+
 @app.route('/calendar', methods=['GET'])
 def calendar():
     user = database.models.User.query.filter_by(user_id=1).first()
