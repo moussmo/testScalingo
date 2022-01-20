@@ -297,11 +297,9 @@ def internship_form(id=None):
     internship = get_internship_by_id(id)
     form = request.form
     if (request.method == 'POST'):
-
         extension = bool(request.form.get('extension'))
         if extension == True:
-            html_page = 'internships_form_extension.html'
-            return render_template(html_page)
+            return render_template('internships_form_extension.html', intern=internship)
 
         internship.title = form.get("title", "")
         internship.agreement_title=form.get("agreement_title", "")

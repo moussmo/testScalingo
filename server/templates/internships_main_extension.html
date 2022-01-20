@@ -5,7 +5,18 @@
   <div style = "padding: 10px;">
     <label>Stages</label>
   </div>
-  <a class="btn btn-primary btn-lg" href="/internships/new">Nouveau</a>
+    <form id="newForm"  action="/internships/new" method="POST">
+        <input type="hidden" name="extension" value="True" />
+        <button class="btn btn-primary btn-lg" >Nouveau</button>
+    </form>
+
+            <script>
+             $(document).ready(function(){
+             var form= document.getElementById("newForm");
+
+            });
+            </script>
+<!--  <a class="btn btn-primary btn-lg" href="/internships/new">Nouveau</a>-->
   
   <ul>
       {% for internship in results %}
