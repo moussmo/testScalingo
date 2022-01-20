@@ -290,7 +290,6 @@ def internships_main():
 
     return render_template(html_page, results=internships, student=user)
 
-
 @app.route('/internships/new', methods=["GET", "POST"])
 @app.route('/internships/new/<id>', methods=["GET", "POST"])
 def internship_form(id=None):
@@ -300,7 +299,8 @@ def internship_form(id=None):
         extension = bool(request.form.get('extension'))
         if extension == True:
             return render_template('internships_form_extension.html', intern=internship)
-
+        if internship is None:
+            internship = Internship()
         internship.title = form.get("title", "")
         internship.agreement_title=form.get("agreement_title", "")
         internship.description=form.get("description", "")
