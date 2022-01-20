@@ -1,5 +1,3 @@
-from tkinter.tix import DECREASING
-from flask_login import UserMixin
 from database.init import db
 from flask_login import UserMixin
 
