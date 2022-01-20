@@ -52,12 +52,13 @@ Séparation des tâches et démarrage du code.
 
 * Suite de l'intégration des fiches de stage
 * Extension des fiches (pas complètes, mais ressemblent maintenant à de vraies fiches)
-* Recherches sur Sirene
+* Recherches sur Sirene et implémentation d'un appel à l'api
 
 ### Mohamed
 
 * Merge de la branche de Mohamed et la branche principale de développement
-* Début de l'intégration des extensions
+* Intégration des extensions
+* Réflexion sur le déploiement
 
 ### Simon
 
