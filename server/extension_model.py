@@ -3,6 +3,18 @@ class Tab:
         self.tab_type = tab_type
         self.tab_name = tab_type
         self.content = 'default'
+        self._set_route()
+
+    def _set_route(self):
+        if self.tab_type == 'calendar':
+            self.route = '/calendar'
+        elif self.tab_type == 'internship':
+            if self.content == 'new':
+                self.route = '/internships/new'
+            else:
+                self.route = '/internships'
+        else:
+            self.route = '/base_extension'
 
     def set_name(self, name):
         self.tab_name = name

@@ -1,4 +1,4 @@
-{%extends "base.html"%}
+{%extends "base_extension.html"%}
 
 {%block body%}
 <div style = "padding-left: 50px;">
@@ -12,7 +12,7 @@
         <div style = "padding: 10px; border-color: black">
             <div>{{internship.title}}</div>
             <div>{{internship.date.strftime("%c")}}</div>
-            <a href="{{ url_for('internship_form', id=internship.id) }}">Modifier</a>
+            <a href="{{ url_for('internship_form_extension', id=internship.id) }}">Modifier</a>
         </div>
       {% endfor %}
   </ul>

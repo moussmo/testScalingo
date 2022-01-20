@@ -38,7 +38,7 @@ def build_extension_html(extension):
         contents.append('</div>')
         for tab in extension.tabs:
             name = "".join(tab.tab_name.split(' '))
-            action = '/' + tab.tab_type
+            action = tab.route
             tab_content = ("""\n<div id="{0}" class="tabcontent">"""+
                            """\n<form id="{0}Form" target="{0}Frame"  action="{1}" method="POST">"""+
                            """\n<input type="text" name="extension" value="True" />"""+
@@ -55,7 +55,7 @@ def build_extension_html(extension):
              {0}form.submit();
             }});
             </script>
-            </div>""").format(name, '/login')
+            </div>""").format(name, action)
             contents.append(tab_content)
         contents.append('{%endblock%}')
         f.writelines(contents)

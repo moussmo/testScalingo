@@ -53,6 +53,10 @@ def index():
     route_users=route_users,
     route_internships=route_internships)
 
+@app.route('/base_extension')
+def index_extension():
+    return render_template('/base_extensions.html')
+
 @app.route('/login')
 def login():
     disconnected = bool(request.args.get('disconnected'))
@@ -130,15 +134,22 @@ def extension_route(name):
     return render_template('extension_{}.html'.format(name))
   
   
-@app.route('/calendar', methods=['GET'])
+@app.route('/calendar', methods=['GET', 'POST'])
 @login_required
 def calendar():
     user = current_user
-    return render_template('calendar.html',resultat = "", #events=str(events), 
+    extension = bool(request.form.get('extension'))
+    if extension == True:
+        html_page = 'calendar_extension.html'
+    else:
+        html_page = 'calendar.html'
+
+    return render_template(html_page, resultat = "", #events=str(events),
     route_accueil=route_accueil,
     route_weather=route_weather,
     route_calendar=route_calendar,
     route_users=route_users)
+
 
 @app.route('/post_events',methods=['POST'])
 @login_required
@@ -266,11 +277,19 @@ def users():
     route_calendar=route_calendar,
     route_users=route_users)
 
-@app.route('/internships', methods=["GET"])
+@app.route('/internships', methods=["GET", 'POST'])
+@login_required
 def internships_main():
     internships=get_internships_by_student(current_user.user_id)
     user=get_user_by_id(current_user.user_id)
-    return render_template('internships_main.html', results=internships, student=user)
+    extension = bool(request.form.get('extension'))
+    if extension == True:
+        html_page = 'internships_main_extension.html'
+    else:
+        html_page = 'internships_main.html'
+
+    return render_template(html_page, results=internships, student=user)
+
 
 @app.route('/internships/new', methods=["GET", "POST"])
 @app.route('/internships/new/<id>', methods=["GET", "POST"])
@@ -278,8 +297,11 @@ def internship_form(id=None):
     internship = get_internship_by_id(id)
     form = request.form
     if (request.method == 'POST'):
-        if internship is None:
-            internship = Internship()
+
+        extension = bool(request.form.get('extension'))
+        if extension == True:
+            html_page = 'internships_form_extension.html'
+            return render_template(html_page)
 
         internship.title = form.get("title", "")
         internship.agreement_title=form.get("agreement_title", "")
@@ -316,6 +338,7 @@ def internship_form(id=None):
         internship.date=datetime.datetime.now()
         add_internship(internship)
         return redirect(url_for('internships_main'))
+
     return render_template('internships_form.html', intern=internship)
 
 if __name__ == '__main__':
