@@ -1,4 +1,3 @@
-
 class Tab:
     def __init__(self, tab_type):
         self.tab_type = tab_type
@@ -20,7 +19,7 @@ class Extension:
             self.tabs = tabs
 
     def addCalendar(self, **kwargs):
-        tab = Tab('Calendar')
+        tab = Tab('calendar')
 
         if 'name' in kwargs:
             tab.set_name(kwargs['name'])
@@ -29,8 +28,7 @@ class Extension:
         return Extension(self.extension_name, tabs)
 
     def addInternship(self, **kwargs):
-        tab = Tab('Internship')
-
+        tab = Tab('internship')
         if 'name' in kwargs:
             tab.set_name(kwargs['name'])
 
@@ -40,8 +38,6 @@ class Extension:
         tabs = self.tabs + [tab]
         return Extension(self.extension_name, tabs)
 
-if __name__=='__main__':
-    extensions = []
 
 
 

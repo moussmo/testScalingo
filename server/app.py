@@ -8,8 +8,8 @@ import database.models
 from config.config import Config
 from database.models import User
 from database.init import db, init_database
-from extension_blueprint import extensions_blueprint
 
+import extension_build
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request,redirect,url_for, jsonify, flash
 from flask_login import login_user, logout_user, login_required, LoginManager, current_user
@@ -17,7 +17,6 @@ from flask_login import login_user, logout_user, login_required, LoginManager, c
 port = os.getenv("PORT")
 app = Flask(__name__)
 app.config.from_object(Config)
-app.register_blueprint(extensions_blueprint)
 
 db.init_app(app)
 
@@ -37,9 +36,9 @@ login_manager.init_app(app)
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
+    return redirect(url_for('login'))
 
 @app.route('/login')
 def login():
@@ -109,6 +108,9 @@ def unsubscribe():
     db.session.commit()
     return redirect(url_for('login', unsubscribed=True))
 
+@app.route('/extension/<name>')
+def extension_route(name):
+    return render_template('extension_{}.html'.format(name))
 
 @app.route('/calendar', methods=['GET'])
 def calendar():
