@@ -57,7 +57,7 @@ def get_internships_by_student_and_year(student_id, internship_year):
     return Internship.query.filter_by(student_id=student_id).filter_by(year=internship_year)
 
 def remove_internship(internship_id):
-    db.session.delete(Internship.query.filter_by(id=internship_id))
+    db.session.delete(Internship.query.filter_by(id=internship_id).first())
     db.session.commit()
 
 def get_user_by_id(user_id):

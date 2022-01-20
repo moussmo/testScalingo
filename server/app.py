@@ -321,5 +321,10 @@ def search_siret(name):
     siret=result["etablissements"][0]["siret"]
     return(siret)
 
+@app.route('/internships/delete/<id>', methods=["GET"])
+def delete_internship(id=None):
+    remove_internship(id)
+    return redirect(url_for('internships_main'))
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
