@@ -46,7 +46,8 @@ def index():
     route_accueil=route_accueil,
     route_weather=route_weather,
     route_calendar=route_calendar,
-    route_users=route_users)
+    route_users=route_users,
+    route_internships=route_internships)
 
 @app.route('/login')
 def login():
@@ -257,19 +258,51 @@ def users():
 @app.route('/internships', methods=["GET"])
 def internships_main():
     internships=get_internships_by_student(current_user.user_id)
-    return render_template('internships_main.html', results=internships)
+    user=get_user_by_id(current_user.user_id)
+    return render_template('internships_main.html', results=internships, student=user)
 
 @app.route('/internships/new', methods=["GET", "POST"])
 @app.route('/internships/new/<id>', methods=["GET", "POST"])
 def internship_form(id=None):
-    print("id:", id)
     internship = get_internship_by_id(id)
+    form = request.form
     if (request.method == 'POST'):
         if internship is None:
             internship = Internship()
-        internship.title = request.form.get("title", "")
-        internship.year = request.form.get("year", "")
-        internship.student = current_user.user_id
+
+        internship.title = form.get("title", "")
+        internship.agreement_title=form.get("agreement_title", "")
+        internship.description=form.get("description", "")
+        internship.mission=form.get("mission", "")
+        internship.staff=form.get("staff", "")
+        internship.research_argument=form.get("research_argument", "")
+        internship.date_beginning=form.get("date_beginning", "")
+        internship.date_end=form.get("date_end", "")
+        internship.hours_per_week=form.get("hours_per_week", "")
+        internship.schedule=form.get("schedule", "")
+        internship.language=form.get("language", "")
+        internship.year = form.get("year", "")
+        internship.campus=form.get("campus", "")
+        internship.option=form.get("option", "")
+
+        internship.company_name=form.get("company_name", "")
+        internship.company_group=form.get("company_group", "")
+        internship.company_siret=form.get("company_siret", "")
+        internship.company_phone=form.get("company_phone", "")
+        internship.company_adress=form.get("company_adress", "")
+        internship.company_postal_code=form.get("company_postal_code", "")
+        internship.company_city=form.get("company_city", "")
+        internship.company_country=form.get("company_country", "")
+
+        internship.tutor_civility=form.get("tutor_civility", "")
+        internship.tutor_name=form.get("tutor_name", "")
+        internship.tutor_surname=form.get("tutor_surname", "")
+        internship.tutor_job=form.get("tutor_job", "")
+        internship.tutor_email=form.get("tutor_email", "")
+        internship.tutor_phone=form.get("tutor_phone", "")
+
+        internship.student_id = current_user.user_id
+        internship.date=datetime.datetime.now()
         add_internship(internship)
         return redirect(url_for('internships_main'))
     return render_template('internships_form.html', intern=internship)
