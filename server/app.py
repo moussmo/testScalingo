@@ -10,14 +10,18 @@ import datetime
 import utils
 
 from config.config import Config
+from database.models import User
+from database.init import db, init_database
 from database.models import *
 from database.init import db,init_database
 
-api_key = "76492f1cc7209a0e7210f0f223555b6f"
+import extension_build
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, render_template, request,redirect,url_for, jsonify, flash
+from flask_login import login_user, logout_user, login_required, LoginManager, current_user
 
 port = os.getenv("PORT")
 app = Flask(__name__)
-
 app.config.from_object(Config)
 
 db.init_app(app)
@@ -38,7 +42,7 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
+  
 @app.route('/',methods=['GET'])
 @login_required
 def index():
@@ -120,6 +124,12 @@ def unsubscribe():
     db.session.commit()
     return redirect(url_for('login', unsubscribed=True))
 
+  
+@app.route('/extension/<name>')
+def extension_route(name):
+    return render_template('extension_{}.html'.format(name))
+  
+  
 @app.route('/calendar', methods=['GET'])
 @login_required
 def calendar():
@@ -149,6 +159,7 @@ def post_events():
         events=[]
     print(events)
     return jsonify(events)
+
 
 @app.route('/calendar/event',methods=['GET','POST'])
 @app.route('/calendar/event/<id>',methods=['GET','POST'])

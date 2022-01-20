@@ -1,6 +1,7 @@
 from tkinter.tix import DECREASING
 from flask_login import UserMixin
 from database.init import db
+from flask_login import UserMixin
 
 class Internship(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -96,4 +97,3 @@ class User(UserMixin, db.Model):
 
     def get_id(self):
         return self.user_id
-
