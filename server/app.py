@@ -10,14 +10,18 @@ import datetime
 import utils
 
 from config.config import Config
+from database.models import User
+from database.init import db, init_database
 from database.models import *
 from database.init import db,init_database
 
-api_key = "76492f1cc7209a0e7210f0f223555b6f"
+import extension_build
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, render_template, request,redirect,url_for, jsonify, flash
+from flask_login import login_user, logout_user, login_required, LoginManager, current_user
 
 port = os.getenv("PORT")
 app = Flask(__name__)
-
 app.config.from_object(Config)
 
 db.init_app(app)
@@ -38,7 +42,7 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
+  
 @app.route('/',methods=['GET'])
 @login_required
 def index():
@@ -48,6 +52,10 @@ def index():
     route_calendar=route_calendar,
     route_users=route_users,
     route_internships=route_internships)
+
+@app.route('/base_extension')
+def index_extension():
+    return render_template('/base_extensions.html')
 
 @app.route('/login')
 def login():
@@ -120,15 +128,28 @@ def unsubscribe():
     db.session.commit()
     return redirect(url_for('login', unsubscribed=True))
 
-@app.route('/calendar', methods=['GET'])
+  
+@app.route('/extension/<name>')
+def extension_route(name):
+    return render_template('extension_{}.html'.format(name))
+  
+  
+@app.route('/calendar', methods=['GET', 'POST'])
 @login_required
 def calendar():
     user = current_user
-    return render_template('calendar.html',resultat = "", #events=str(events), 
+    extension = bool(request.form.get('extension'))
+    if extension == True:
+        html_page = 'calendar_extension.html'
+    else:
+        html_page = 'calendar.html'
+
+    return render_template(html_page, resultat = "", #events=str(events),
     route_accueil=route_accueil,
     route_weather=route_weather,
     route_calendar=route_calendar,
     route_users=route_users)
+
 
 @app.route('/post_events',methods=['POST'])
 @login_required
@@ -149,6 +170,7 @@ def post_events():
         events=[]
     print(events)
     return jsonify(events)
+
 
 @app.route('/calendar/event',methods=['GET','POST'])
 @app.route('/calendar/event/<id>',methods=['GET','POST'])
@@ -255,11 +277,19 @@ def users():
     route_calendar=route_calendar,
     route_users=route_users)
 
-@app.route('/internships', methods=["GET"])
+@app.route('/internships', methods=["GET", 'POST'])
+@login_required
 def internships_main():
     internships=get_internships_by_student(current_user.user_id)
     user=get_user_by_id(current_user.user_id)
-    return render_template('internships_main.html', results=internships, student=user)
+    extension = bool(request.form.get('extension'))
+    if extension == True:
+        html_page = 'internships_main_extension.html'
+    else:
+        html_page = 'internships_main.html'
+
+    return render_template(html_page, results=internships, student=user)
+
 
 @app.route('/internships/new', methods=["GET", "POST"])
 @app.route('/internships/new/<id>', methods=["GET", "POST"])
@@ -267,8 +297,9 @@ def internship_form(id=None):
     internship = get_internship_by_id(id)
     form = request.form
     if (request.method == 'POST'):
-        if internship is None:
-            internship = Internship()
+        extension = bool(request.form.get('extension'))
+        if extension == True:
+            return render_template('internships_form_extension.html', intern=internship)
 
         internship.title = form.get("title", "")
         internship.agreement_title=form.get("agreement_title", "")
@@ -307,6 +338,7 @@ def internship_form(id=None):
         internship.date=datetime.datetime.now()
         add_internship(internship)
         return redirect(url_for('internships_main'))
+
     return render_template('internships_form.html', intern=internship)
 
 def search_siret(name):
