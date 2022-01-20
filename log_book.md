@@ -29,3 +29,36 @@ Séparation des tâches et démarrage du code.
 ### Simon
 
 * Avancée de la partie "emploi du temps"
+
+## Mercredi 19 après-midi
+
+### Joanne
+
+* Merge des branches de Joanne et Simon
+* Début de l'intégration des fiches de stage
+
+### Mohamed
+
+* Travail sur les extensions
+
+### Simon
+
+* Continuation de la partie emploi du temps
+* Partie partiellement fonctionnelle: chaque utilisateur a un calendrier personnel, peut visionner et ajouter des événements
+
+## Jeudi 20
+
+### Joanne
+
+* Suite de l'intégration des fiches de stage
+* Extension des fiches (pas complètes, mais ressemblent maintenant à de vraies fiches)
+* Recherches sur Sirene
+
+### Mohamed
+
+* Merge de la branche de Mohamed et la branche principale de développement
+* Début de l'intégration des extensions
+
+### Simon
+
+* Difficultés rencontrées sur certains aspects des calendriers
