@@ -33,18 +33,21 @@ def build_extension_html(extension):
         contents = ["""{% extends "base.html" %}\n{%block body%}\n<link rel="stylesheet" href="../static/style/extension.css">\n<script type="text/javascript" src="../static/script/extension.js"></script>\n<div class="tab">"""]
         for tab in extension.tabs:
             name = "".join(tab.tab_name.split(' '))
-            content = """\n<button class="tablinks" onclick="openTab(event,'""" + name + """')">""" + name + """</button>"""
+            name_to_display = tab.tab_name
+            content = """\n<button class="tablinks" onclick="openTab(event,'""" + name + """')">""" + name_to_display + """</button>"""
             contents.append(content)
         contents.append('</div>')
         for tab in extension.tabs:
             name = "".join(tab.tab_name.split(' '))
             action = tab.route
+            width = 1200
+            height = 1250 if action == '/internships/new' else 650
             tab_content = ("""\n<div id="{0}" class="tabcontent">"""+
                            """\n<form id="{0}Form" target="{0}Frame"  action="{1}" method="POST">"""+
                            """\n<input type="text" name="extension" value="True" />"""+
                            """\n</form>"""+
 
-                           """<iframe name="{0}Frame" src="#" width="1200" height="650">
+                           """<iframe name="{0}Frame" src="#" width="{2}" height="{3}">
                Your browser does not support inline frames.
             </iframe>
             
@@ -55,7 +58,7 @@ def build_extension_html(extension):
              {0}form.submit();
             }});
             </script>
-            </div>""").format(name, action)
+            </div>""").format(name, action, width, height)
             contents.append(tab_content)
         contents.append('{%endblock%}')
         f.writelines(contents)

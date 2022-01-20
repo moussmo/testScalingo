@@ -3,9 +3,8 @@ class Tab:
         self.tab_type = tab_type
         self.tab_name = tab_type
         self.content = 'default'
-        self._set_route()
 
-    def _set_route(self):
+    def set_route(self):
         if self.tab_type == 'calendar':
             self.route = '/calendar'
         elif self.tab_type == 'internship':
@@ -36,6 +35,7 @@ class Extension:
         if 'name' in kwargs:
             tab.set_name(kwargs['name'])
 
+        tab.set_route()
         tabs = self.tabs + [tab]
         return Extension(self.extension_name, tabs)
 
@@ -43,10 +43,13 @@ class Extension:
         tab = Tab('internship')
         if 'name' in kwargs:
             tab.set_name(kwargs['name'])
+        else:
+            tab.set_name('Tab '+ str(len(self.tabs)))
 
         if 'content' in kwargs:
             tab.set_content(kwargs['content'])
 
+        tab.set_route()
         tabs = self.tabs + [tab]
         return Extension(self.extension_name, tabs)
 

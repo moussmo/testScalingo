@@ -4,7 +4,7 @@
 <script type="text/javascript" src="../static/script/extension.js"></script>
 <div class="tab">
 <button class="tablinks" onclick="openTab(event,'calendar')">calendar</button>
-<button class="tablinks" onclick="openTab(event,'Fichedestagevide')">Fichedestagevide</button></div>
+<button class="tablinks" onclick="openTab(event,'Stages')">Stages</button></div>
 <div id="calendar" class="tabcontent">
 <form id="calendarForm" target="calendarFrame"  action="/calendar" method="POST">
 <input type="text" name="extension" value="True" />
@@ -20,18 +20,18 @@
             });
             </script>
             </div>
-<div id="Fichedestagevide" class="tabcontent">
-<form id="FichedestagevideForm" target="FichedestagevideFrame"  action="/internships" method="POST">
+<div id="Stages" class="tabcontent">
+<form id="StagesForm" target="StagesFrame"  action="/internships" method="POST">
 <input type="text" name="extension" value="True" />
-</form><iframe name="FichedestagevideFrame" src="#" width="1200" height="650">
+</form><iframe name="StagesFrame" src="#" width="1200" height="650">
                Your browser does not support inline frames.
             </iframe>
             
             <script>
              $(document).ready(function(){
-             var Fichedestagevideform= document.getElementById("FichedestagevideForm");
-             Fichedestagevideform.style.display = "none";
-             Fichedestagevideform.submit();
+             var Stagesform= document.getElementById("StagesForm");
+             Stagesform.style.display = "none";
+             Stagesform.submit();
             });
             </script>
             </div>{%endblock%}
