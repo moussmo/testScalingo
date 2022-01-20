@@ -287,7 +287,9 @@ def internship_form(id=None):
 
         internship.company_name=form.get("company_name", "")
         internship.company_group=form.get("company_group", "")
-        internship.company_siret=form.get("company_siret", "")
+        print(internship.company_name)
+        if (internship.company_name != ""):
+            internship.company_siret=search_siret(internship.company_name)
         internship.company_phone=form.get("company_phone", "")
         internship.company_adress=form.get("company_adress", "")
         internship.company_postal_code=form.get("company_postal_code", "")
@@ -306,6 +308,18 @@ def internship_form(id=None):
         add_internship(internship)
         return redirect(url_for('internships_main'))
     return render_template('internships_form.html', intern=internship)
+
+def search_siret(name):
+    name = name.upper()
+    today = datetime.datetime.now()
+    now = today.strftime("%Y-%m-%d")
+    url = 'https://api.insee.fr/entreprises/sirene/V3/siret?q=denominationUniteLegale%3A'+ name+ '&date=' + now
+    print("url", url)
+    key = 'Bearer 9d62e645-03c2-35c5-8fe3-f7a51cf31a9c'
+    headers = {'Accept': 'application/json', 'Authorization': key}
+    result = requests.get(url, headers=headers).json()
+    siret=result["etablissements"][0]["siret"]
+    return(siret)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
