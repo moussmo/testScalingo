@@ -15,6 +15,7 @@ from database.init import db, init_database
 from database.models import *
 from database.init import db,init_database
 
+import database.models
 import extension_build
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, render_template, request,redirect,url_for, jsonify, flash
