@@ -47,6 +47,7 @@ def load_user(user_id):
 @login_required
 def index():
     return render_template('index.html', 
+    current_user=current_user,
     route_accueil=route_accueil,
     route_weather=route_weather,
     route_calendar=route_calendar,
@@ -137,7 +138,6 @@ def extension_route(name):
 @app.route('/calendar', methods=['GET', 'POST'])
 @login_required
 def calendar():
-    user = current_user
     extension = bool(request.form.get('extension'))
     if extension == True:
         html_page = 'calendar_extension.html'
@@ -145,6 +145,7 @@ def calendar():
         html_page = 'calendar.html'
 
     return render_template(html_page, resultat = "", #events=str(events),
+    current_user=current_user,
     route_accueil=route_accueil,
     route_weather=route_weather,
     route_calendar=route_calendar,
@@ -164,8 +165,11 @@ def post_events():
         events_id = user.events.split(";")
         events=[]
         for event_id in events_id:
-            event = Event.query.filter_by(id=event_id).first()
-            events.append(event.as_dict())
+            event = database.models.Event.query.filter_by(id=event_id).first()
+            dict = event.as_dict()
+            orga = database.models.User.query.filter_by(user_id=event.organisateur_id).first()
+            dict["organisateur"] = orga.name
+            events.append(dict)
     else:
         events=[]
     print(events)
@@ -177,14 +181,15 @@ def post_events():
 @login_required
 def event(id=None):
     #Datetime doc : https://www.w3schools.com/python/python_datetime.asp
-    print(id)
-    event = Event.query.filter_by(id=id).first()
-    print(event)
-    users = User.query.all()
+    print("id : " + str(id))
+    event = database.models.Event.query.filter_by(id=id).first()
+    print("event : " + str(event))
+    users = database.models.User.query.all()
     form = request.form
     errors=[]
     #errors=["broo"]
     if request.method=='POST':
+        print(" POST METHOD , id :" + str(id))
         if event is None:
             event = Event()
         title= form.get("title_event")
@@ -192,24 +197,49 @@ def event(id=None):
         debut_min= int(form.get("start_min"))
         fin_heure= int(form.get("end_hour"))
         fin_min= int(form.get("end_min"))
+        salle= str(form.get("room_event"))
         date_str=form.get("date")
-        date_d,date_m,date_y=utils.parse_date(date_str)
+        
         participants_id=str(form.get("participants_id_name"))
+        organisateur_id_str=form.get("organisateur_id_name")
 
+        
+        if (organisateur_id_str==""):
+            organisateur_id=None
+        else:
+            organisateur_id=int(organisateur_id_str)
+        
+        if (date_str!=""):
+            date_d,date_m,date_y=utils.parse_date(date_str)
+            event.start=datetime.datetime(date_y,date_m,date_d,debut_heure,debut_min)
+            event.end=datetime.datetime(date_y,date_m,date_d,fin_heure,fin_min)
+            if (event.start>event.end):
+                errors.append("Les horaires de l'événement sont incorrects")
+        else:
+            errors.append("Choisissez une date correcte")
 
         event.title=title
-        event.start=datetime.datetime(date_y,date_m,date_d,debut_heure,debut_min)
-        event.end=datetime.datetime(date_y,date_m,date_d,fin_heure,fin_min)
+
+        event.owner_id=current_user.user_id
+        event.organisateur_id=organisateur_id
+        event.room=salle
+        
+        #setup attribute "participants" for the event. May not be commited tho
         if participants_id!="":
             ids = participants_id.split(";")
             if event.participants:
-                for id in ids:
-                    if id not in event.participants.split(";"):
-                        event.participants = event.participants + ";" + str(id)
+                for event_id in ids:
+                    if event_id not in event.participants.split(";"):
+                        event.participants = event.participants + ";" + str(event_id)
             else:
                 event.participants=participants_id
         print("event.participants : " + str(event.participants))
         
+        #Error management
+
+        if (title==""):
+            errors.append("Choisissez un titre à votre événement")
+
         if len(errors)==0:
             db.session.add(event)
             db.session.commit()
@@ -223,6 +253,9 @@ def event(id=None):
                     ids = participant.events.split(";")
                     print("ids in participant commit : " +str(ids))
                     if id!=None:
+                        if id not in ids:
+                            result = result + ";" + str(event.id)
+                    elif event.id!=None:
                         result = result + ";" + str(event.id)
                 else:
                     result = str(event.id)
@@ -250,7 +283,7 @@ def list_events():
     events = Event.query.all()
     result = ""
     for event in events:
-        result+= event.title
+        result+= event.title + " " + str(event.id) + "\n"
     return render_template('index.html',result=result, 
     route_accueil=route_accueil,
     route_weather=route_weather,
@@ -270,7 +303,7 @@ def users():
     users=User.query.order_by(User.user_id.desc()).all()
     result=""
     for user in users:
-        result+=user.name + str(user.user_id)
+        result+=user.name + str(user.user_id) + " " + str(user.events) + "\n"
     return render_template('index.html',result=result, 
     route_accueil=route_accueil,
     route_weather=route_weather,

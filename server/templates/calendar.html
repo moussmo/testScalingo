@@ -70,7 +70,13 @@
 		}
 
 		function select(start, end, allDay) {
-				var title = prompt('Event Title:');
+				//var title = prompt('Event Title:');
+				console.log("{{current_user.name}}")
+				console.log(start)
+				console.log(end)
+				var url = "{{route_calendar}}/event"
+				var hasParams = false
+				/*
 				if (title) {
 					calendar.fullCalendar('renderEvent',
 						{
@@ -82,7 +88,27 @@
 						true // make the event "stick"
 					);
 				}
+				*/
 				calendar.fullCalendar('unselect');
+				if (start) {
+					if (hasParams) {
+						url = url + "&start=" + start.toString()
+					}
+					else {
+						hasParams = true
+						url = url + "?start=" + start.toString()
+					}
+				}
+				if (end) {
+					if (hasParams) {
+						url = url + "&end=" + end.toString()
+					}
+					else {
+						hasParams = true
+						url = url + "?end=" + end.toString()
+					}
+				}
+				window.location.href= url
 			}
 
 		var events_json

@@ -34,7 +34,7 @@
   <div class="column">
   <label>Heure de début</label>
   <select class="form-select" aria-label="Default select example" name="start_hour">
-    <option selected value="0">00</option>
+    <option value="0">00</option>
     <option value="1">01</option>
     <option value="2">02</option>
     <option value="3">03</option>
@@ -62,7 +62,7 @@
   </select>
   H
   <select class="form-select" aria-label="Default select example" name="start_min">
-    <option selected value="0">00</option>
+    <option value="0">00</option>
     <option value="5">05</option>
     <option value="10">10</option>
     <option value="15">15</option>
@@ -79,7 +79,7 @@
   <div class="column">
   <label>Heure de fin</label>
   <select class="form-select" aria-label="Default select example" name="end_hour">
-    <option selected value="0">00</option>
+    <option value="0">00</option>
     <option value="1">01</option>
     <option value="2">02</option>
     <option value="3">03</option>
@@ -106,7 +106,7 @@
   </select>
   H
   <select class="form-select" aria-label="Default select example" name="end_min">
-    <option selected value="0">00</option>
+    <option value="0">00</option>
     <option value="5">05</option>
     <option value="10">10</option>
     <option value="15">15</option>
@@ -123,26 +123,74 @@
 </div>
 
 <div class="row">
+  <div class="form-group">
+    <label>Salle</label>
+    <input class="form-control" aria-describedby="emailHelp" placeholder="Salle de l'événement" name = "room_event">
+  </div>
+</div>
+
+<div class="row">
+  <label>Participants : </label>
   <div class="form-check">
   {%for user in users%}
 
-  <input class="form-check-input participant-check" type="checkbox" value="{{user.user_id}}" id="{{user.user_id}}">
-  <label class="form-check-label" style="padding-left: 15px;" for="{{user.user_id}}">
+  <input class="form-check-input participant-check" type="checkbox" value="{{user.user_id}}" id="participant_{{user.user_id}}">
+  <label class="form-check-label" style="padding-left: 15px;" for="participant_{{user.user_id}}">
     {{user.name}}
   </label>
 
 {%endfor%}
-</div>
+  </div>
 <input value="" class="participants_id" name="participants_id_name" type="hidden">
+</div>
 
+<div class="row">
+  <label>Organisateur : </label>
+  <div class="form-check">
+  {%for user in users%}
+
+  <input class="form-check-input organisateur-check" type="radio" value="{{user.user_id}}" id="orga_{{user.user_id}}">
+  <label class="form-check-label" style="padding-left: 15px;" for="orga_{{user.user_id}}">
+    {{user.name}}
+  </label>
+
+{%endfor%}
+  </div>
+<input value="" class="organisateur_id" name="organisateur_id_name" type="hidden">
 </div>
 
   <button type="submit" class="btn btn-primary btn-lg">Valider</button>
   </form>
   {{resultat}}
+  <a href="{{route_calendar}}" class="btn btn-secondary btn-lg">Annuler</a>
 </div>
 
+
+
+
 <script>
+
+  //Organisateur
+  $(".organisateur-check").change(function(event) {
+    //console.log("--------------")
+    res=""
+    //retrieve which user is being added or removed
+    checkbox = this
+    organisateur_id = checkbox.value.toString()
+    res=organisateur_id
+    
+    //retrieve all participants already crossed
+    input = $(".organisateur_id")
+
+    input.val(res)
+
+    console.log("organisateur à présent : " )
+    console.log(input.val())
+
+  })
+
+
+  //Participants
   $(".participant-check").change(function(event) {
     //console.log("--------------")
     res=""
@@ -203,6 +251,41 @@
     console.log(input.val())
 
   })
+
+  //Recover url params to fill form
+  var queryString = window.location.search
+  const urlParams = new URLSearchParams(queryString);
+  var start = urlParams.get("start")
+  var end = urlParams.get("end")
+
+  date_start = new Date(Date.parse(start))
+  date_end = new Date(Date.parse(end))
+
+  console.log(date_start)
+  console.log(date_end)
+  hour = date_start.getHours()
+
+  element = document.getElementsByName("start_hour")[0]
+  console.log(element)
+  console.log(element.options)
+  element.value=date_start.getHours()
+  
+  
+  o = date_start.getHours()
+  document.getElementsByName("start_hour")[0].options[o].selected=true
+  o = date_end.getHours()
+  document.getElementsByName("end_hour")[0].options[o].selected=true
+  o = (date_start.getMinutes())/5
+  document.getElementsByName("start_min")[0].options[o].selected=true
+  o = (date_end.getMinutes())/5
+  document.getElementsByName("end_min")[0].options[o].selected=true
+
+  console.log(document.getElementsByName("start_hour")[0].options[o])
+  m = parseInt(date_start.getMonth())+1
+    
+  day = date_start.getDate() + "/" + m.toString() + "/" + date_start.getUTCFullYear()
+  console.log(day)
+  document.getElementsByName("date")[0].value=day
 
 </script>
 {%endblock%}
