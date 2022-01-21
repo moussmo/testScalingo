@@ -132,6 +132,7 @@ def unsubscribe():
 
   
 @app.route('/extension/<name>')
+@login_required
 def extension_route(name):
     return render_template('extension_{}.html'.format(name))
   
@@ -326,6 +327,7 @@ def internships_main():
 
 @app.route('/internships/new', methods=["GET", "POST"])
 @app.route('/internships/new/<id>', methods=["GET", "POST"])
+@login_required
 def internship_form(id=None):
     internship = get_internship_by_id(id)
     form = request.form
@@ -387,6 +389,7 @@ def search_siret(name):
     return(siret)
 
 @app.route('/internships/delete/<id>', methods=["GET"])
+@login_required
 def delete_internship(id=None):
     remove_internship(id)
     return redirect(url_for('internships_main'))
