@@ -34,6 +34,11 @@ class Extension:
 
         if 'name' in kwargs:
             tab.set_name(kwargs['name'])
+        else:
+            tab.set_name('Tab '+ str(len(self.tabs)))
+
+        if 'content' in kwargs:
+            tab.set_content(kwargs['content'])
 
         tab.set_route()
         tabs = self.tabs + [tab]
