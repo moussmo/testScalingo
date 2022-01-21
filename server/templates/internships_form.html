@@ -1,33 +1,103 @@
 {%extends "base.html"%}
 
 {%block body%}
-<div style = "padding-left: 50px;">
-    <label>Nouveau stage</label>
-  <form action="" method="post" class="form-example" >
-    <div class="row">
+<link rel="stylesheet" href="../static/style/internships.css">
+
+    <label class = "title">Nouveau stage</label>
+  <form action="" method="post">
         <div class="form-group">
-          <div name="internship_description" style="padding: 10px; border-color: black;">
-            <div>Description du stage</div>
-            <input class="form-control" placeholder="Intitulé du stage" name = "title" value="{{ intern.title }}">
-            <input class="form-control" placeholder="Intitulé du stage dans la langue de la convention" name = "agreement_title" value="{{ intern.agreement_title }}">
-            <input class="form-control" placeholder="Description de l'entreprise" name = "description" value="{{ intern.description }}">
-            <input class="form-control" placeholder="Missions et objectifs" name = "mission" value="{{ intern.mission }}">
-            <input class="form-control" placeholder="Effectif sur le lieu du stage" name = "staff" value="{{ intern.staff }}">
-            <input class="form-control" placeholder="Argumentaire pour un stage de recherche" name = "research" value="{{ intern.research_argumentary }}">
+          <div name="internship_description" class="category-group">
+            <div class="category-title">Description du stage</div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Intitulé du stage :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "title" value="{{ intern.title }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Intitulé du stage dans la langue de la convention :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "agreement_title" value="{{ intern.agreement_title }}" style="height: 2cm;">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Description de l'entreprise :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "description" value="{{ intern.description }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Missions et objectifs :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "mission" value="{{ intern.mission }}" style="height: 2cm;">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Effectif sur le lieu du stage :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "staff" value="{{ intern.staff }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Argumentaire pour un stage de recherche :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "research" value="{{ intern.research_argumentary }}" style="height: 2cm;">
+              </div>
+            </div>
             <!--TODO deal with dates-->
-            <input class="form-control" placeholder="Date de début de stage" name = "date_beginning" value="{{ intern.date_beginning }}">
-            <input class="form-control" placeholder="Date de fin de stage" name = "date_end" value="{{ intern.date_end }}">
-            <input class="form-control" placeholder="Nombre d'heures travaillées par semaine" name = "hours" value="{{ intern.hours_per_week }}">
-            <input class="form-control" placeholder="Jours travaillés et horaires" name = "schedule" value="{{ intern.schedule }}">
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Date de début de stage :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "date_beginning" value="{{ intern.date_beginning }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Date de fin de stage :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "date_beginning" value="{{ intern.date_end }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Nombre d'heures travaillées par semaine :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "hours" value="{{ intern.hours_per_week }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Jours travaillés et horaires :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "schedule" value="{{ intern.schedule }}" style="height: 2cm;">
+              </div>
+            </div>
             <div style ="padding: 10px;">
-              <label>Langue de la convention</label>
+              <label>Langue de la convention :</label>
               <select name = "language">
                   <option>Anglais</option>
                   <option selected="yes">Français</option>
               </select>
             </div>
             <div style ="padding: 10px;">
-              <label>Campus</label>
+              <label>Campus :</label>
               <select name = "campus">
                   <option></option>
                   <option>Brest</option>
@@ -36,7 +106,7 @@
               </select>
             </div>
             <div style ="padding: 10px;">
-                <label>Année</label>
+                <label>Année :</label>
                 <select name = "year">
                     <option></option>
                     <option>1</option>
@@ -45,7 +115,7 @@
                 </select>
             </div>
             <div style ="padding: 10px;">
-              <label>TAF</label>
+              <label>TAF :</label>
               <select name = "option">
                   <option></option>
                   <option>DCL</option>
@@ -55,37 +125,119 @@
             </div>
           </div>
 
-          <div name="company" style="padding: 10px; border-color: black;">
-            <div>Entreprise</div>
-            <input class="form-control" placeholder="Nom de l'entreprise" name = "company_name" value="{{ intern.company_name }}">
-            <input class="form-control" placeholder="Groupe de l'entreprise" name = "company_group" value="{{ intern.company_group }}">
-            <input class="form-control" placeholder="Téléphone de l'entreprise" name = "company_phone" value="{{ intern.company_phone }}">
-            <input class="form-control" placeholder="Adresse de l'entreprise" name = "company_adress" value="{{ intern.company_adress }}">
-            <input class="form-control" placeholder="Code postal de l'entreprise" name = "company_postal_code" value="{{ intern.company_postal_code }}">
-            <input class="form-control" placeholder="Ville de l'entreprise" name = "company_city" value="{{ intern.company_city }}">
-            <input class="form-control" placeholder="Pays de l'entreprise" name = "company_country" value="{{ intern.company_country }}">
+          <div name="company" class="category-group">
+            <div class="category-title">Entreprise</div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Nom de l'entreprise :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "company_name" value="{{ intern.company_name }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Groupe de l'entreprise :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "company_group" value="{{ intern.company_group }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Téléphone de l'entreprise :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "company_phone" value="{{ intern.company_phone }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Adresse de l'entreprise :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "company_adress" value="{{ intern.company_adress }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Code postal de l'entreprise :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "company_postal_code" value="{{ intern.company_postal_code }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Ville de l'entreprise :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "company_city" value="{{ intern.company_city }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Pays de l'entreprise :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "company_country" value="{{ intern.company_country }}">
+              </div>
+            </div>
           </div>
 
-          <div name="tutor" style="padding: 10px; border-color: black;">
-            <div>Tuteur</div>
+          <div name="tutor" class="category-group">
+            <div class="category-title">Tuteur</div>
             <div style ="padding: 10px;">
-              <label>Civilité</label>
+              <label>Civilité :</label>
               <select name = "tutor_civility">
                   <option></option>
                   <option>Mr</option>
                   <option>Mme</option>
               </select>
             </div>
-            <input class="form-control" placeholder="Nom du tuteur" name = "tutor_surname" value="{{ intern.tutor_surname }}">
-            <input class="form-control" placeholder="Prénom du tuteur" name = "tutor_name" value="{{ intern.tutor_name }}">
-            <input class="form-control" placeholder="Poste occupé par le tuteur" name = "tutor_job" value="{{ intern.tutor_job }}">
-            <input class="form-control" placeholder="Email du tuteur" name = "tutor_email" value="{{ intern.tutor_email }}">
-            <input class="form-control" placeholder="Téléphone du tuteur" name = "tutor_phone" value="{{ intern.tutor_phone }}">
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Nom du tuteur :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "tutor_surname" value="{{ intern.tutor_surname }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Prénom du tuteur :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "tutor_name" value="{{ intern.tutor_name }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Poste occupé par le tuteur :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "tutor_job" value="{{ intern.tutor_job }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Email du tuteur :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "tutor_email" value="{{ intern.tutor_email }}">
+              </div>
+            </div>
+            <div class="form_sub col-12">
+              <div class="form-question col-3">
+                Téléphone du tuteur :
+              </div>
+              <div class="form-answer col-9">
+                <input class="form-control" name = "tutor_phone" value="{{ intern.tutor_phone }}">
+              </div>
+            </div>
           </div>
 
         </div>
-    </div>
-  <button type="submit" class="btn btn-primary btn-lg">Valider</button>
+  <button type="submit" class="btn btn-primary btn-lg mybtn">Valider</button>
   </form>
-</div>
 {%endblock%}

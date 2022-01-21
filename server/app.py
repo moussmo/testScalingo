@@ -316,7 +316,7 @@ def internship_form(id=None):
         internship.campus=form.get("campus", "")
         internship.option=form.get("option", "")
 
-        internship.company_name=form.get("company_name", "")
+        internship.company_name=form.get("company_name", "").upper()
         internship.company_group=form.get("company_group", "")
         print(internship.company_name)
         if (internship.company_name != ""):
@@ -338,7 +338,6 @@ def internship_form(id=None):
         internship.date=datetime.datetime.now()
         add_internship(internship)
         return redirect(url_for('internships_main'))
-
     return render_template('internships_form.html', intern=internship)
 
 def search_siret(name):

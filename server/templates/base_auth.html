@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <section class="hero is-primary is-fullheight">
+    <section class="hero is-primary is-fullheight" style="background-color: #9675ce;">
 
         <div class="hero-head">
             <nav class="navbar">
@@ -18,14 +18,14 @@
 
                     <div id="navbarMenuHeroA" class="navbar-menu">
                         <div class="navbar-end">
-                            <a href="{{ url_for('login') }}" class="navbar-item">
-                                Login
+                            <a href="{{ url_for('login') }}" class="mynavbar-item">
+                                Se connecter
                             </a>
-                            <a href="{{ url_for('signup') }}" class="navbar-item">
-                                Sign Up
+                            <a href="{{ url_for('signup') }}" class="mynavbar-item">
+                                S'inscrire
                             </a>
-                            <a href="{{ url_for('logout') }}" class="navbar-item">
-                                Logout
+                            <a href="{{ url_for('logout') }}" class="mynavbar-item">
+                                Se déconnecter
                             </a>
                         </div>
                     </div>
@@ -40,6 +40,19 @@
             </div>
         </div>
     </section>
+
+<style>
+    .mynavbar-item{
+        padding: 10px;
+        height: 1.4cm;
+        border-width: 2px;
+        border-radius: 10px;
+    }
+    .mynavbar-item:hover{
+        border-style:solid;
+        border-color:black;
+    }
+</style>
 </body>
 
 </html>

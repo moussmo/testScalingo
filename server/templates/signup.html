@@ -20,18 +20,37 @@
 
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="text" name="name" placeholder="Name" autofocus="">
+                    <input class="input is-large" type="text" name="name" placeholder="Nom" autofocus="">
                 </div>
             </div>
 
             <div class="field">
                 <div class="control">
-                    <input class="input is-large" type="password" name="password" placeholder="Password">
+                    <input class="input is-large" type="password" name="password" placeholder="Mot de passe">
                 </div>
             </div>
 
-            <button class="button is-block is-info is-large is-fullwidth">Sign Up</button>
+            <button class="button is-block is-large is-fullwidth mybutton">S'inscrire</button>
         </form>
     </div>
 </div>
+
+<style>
+    body{
+        background-color: #9675ce;
+    }
+
+    .mybutton{
+        background-color:indigo;
+        color: white;
+    }
+
+    .mybutton:hover{
+        border-style: solid;
+        border-width: 2px;
+        border-color: black;
+        color: white;
+        background-color: gray;
+    }
+</style>
 {% endblock %}

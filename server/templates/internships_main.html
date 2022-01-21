@@ -1,22 +1,27 @@
 {%extends "base.html"%}
 
 {%block body%}
-<div style = "padding-left: 50px;">
-  <div style = "padding: 10px;">
-    <label>Stages</label>
+<link rel="stylesheet" href="../static/style/internships.css">
+<div>
+  <label class="title col-12">Stages</label>
+  <div style="background-color: #9675ce; padding-top: 10px;">
+    <a class="btn btn-primary btn-lg mybtn" href="/internships/new">Nouveau</a>
   </div>
-  <a class="btn btn-primary btn-lg" href="/internships/new">Nouveau</a>
-  
-  <ul>
+  <ul class="mylist">
+    <div style="background: #9675ce">
       {% for internship in results %}
-        <div style = "padding: 10px; border-color: black">
-            <div>{{internship.title}}</div>
-            <div>{{internship.date.strftime("%c")}}</div>
-            <a href="{{ url_for("internship_form", id=internship.id) }}">Modifier</a>
-            <a href="{{ url_for("delete_internship", id=internship.id) }}">Supprimer</a>
+        <div class="mycell col-12">
+            <div class="col-6" style="float:left">{{internship.title}}</div>
+            <div class="col-2" style="float:left">
+              {{internship.company_name}}
+              {{internship.company_siret}}
+            </div>
+            <div class="col-2" style="float:left">{{internship.date.strftime("%c")}}</div>
+            <a class="button mylink col-1" href="{{ url_for("internship_form", id=internship.id) }}">Modifier</a>
+            <a class = "button mylink col-1" href="{{ url_for("delete_internship", id=internship.id) }}">Supprimer</a>
         </div>
       {% endfor %}
+    </div>
   </ul>
-
 </div>
 {%endblock%}
