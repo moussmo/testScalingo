@@ -58,6 +58,15 @@ class Extension:
         tabs = self.tabs + [tab]
         return Extension(self.extension_name, tabs)
 
+    def addContactsBook(self, **kwargs):
+        return Extension(self.extension_name, self.tabs)
 
+    def addBugReport(self, **kwargs):
+        return Extension(self.extension_name, self.tabs)
 
+    def addProfile(self, **kwargs):
+        return Extension(self.extension_name, self.tabs)
+
+    def addDashBoard(self, **kwargs):
+        return Extension(self.extension_name, self.tabs)
 

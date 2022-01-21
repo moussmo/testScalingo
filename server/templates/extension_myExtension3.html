@@ -3,35 +3,19 @@
 <link rel="stylesheet" href="../static/style/extension.css">
 <script type="text/javascript" src="../static/script/extension.js"></script>
 <div class="tab">
-<button class="tablinks" onclick="openTab(event,'calendar')">calendar</button>
-<button class="tablinks" onclick="openTab(event,'Stages')">Stages</button></div>
-<div id="calendar" class="tabcontent">
-<form id="calendarForm" target="calendarFrame"  action="/calendar" method="POST">
+<button class="tablinks" onclick="openTab(event,'Tab0')">Tab 0</button></div>
+<div id="Tab0" class="tabcontent">
+<form id="Tab0Form" target="Tab0Frame"  action="/calendar" method="POST">
 <input type="text" name="extension" value="True" />
-</form><iframe name="calendarFrame" src="#" width="1200" height="650">
+</form><iframe name="Tab0Frame" src="#" width="1200" height="650">
                Your browser does not support inline frames.
             </iframe>
             
             <script>
              $(document).ready(function(){
-             var calendarform= document.getElementById("calendarForm");
-             calendarform.style.display = "none";
-             calendarform.submit();
-            });
-            </script>
-            </div>
-<div id="Stages" class="tabcontent">
-<form id="StagesForm" target="StagesFrame"  action="/internships" method="POST">
-<input type="text" name="extension" value="True" />
-</form><iframe name="StagesFrame" src="#" width="1200" height="650">
-               Your browser does not support inline frames.
-            </iframe>
-            
-            <script>
-             $(document).ready(function(){
-             var Stagesform= document.getElementById("StagesForm");
-             Stagesform.style.display = "none";
-             Stagesform.submit();
+             var Tab0form= document.getElementById("Tab0Form");
+             Tab0form.style.display = "none";
+             Tab0form.submit();
             });
             </script>
             </div>{%endblock%}

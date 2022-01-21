@@ -3,23 +3,9 @@
 <link rel="stylesheet" href="../static/style/extension.css">
 <script type="text/javascript" src="../static/script/extension.js"></script>
 <div class="tab">
-<button class="tablinks" onclick="openTab(event,'calendar')">calendar</button>
-<button class="tablinks" onclick="openTab(event,'Stages')">Stages</button></div>
-<div id="calendar" class="tabcontent">
-<form id="calendarForm" target="calendarFrame"  action="/calendar" method="POST">
-<input type="text" name="extension" value="True" />
-</form><iframe name="calendarFrame" src="#" width="1200" height="650">
-               Your browser does not support inline frames.
-            </iframe>
-            
-            <script>
-             $(document).ready(function(){
-             var calendarform= document.getElementById("calendarForm");
-             calendarform.style.display = "none";
-             calendarform.submit();
-            });
-            </script>
-            </div>
+<button class="tablinks" onclick="openTab(event,'Stages')">Stages</button>
+<button class="tablinks" onclick="openTab(event,'Creationdefiche')">Creation de fiche</button>
+<button class="tablinks" onclick="openTab(event,'Calendrier')">Calendrier</button></div>
 <div id="Stages" class="tabcontent">
 <form id="StagesForm" target="StagesFrame"  action="/internships" method="POST">
 <input type="text" name="extension" value="True" />
@@ -32,6 +18,36 @@
              var Stagesform= document.getElementById("StagesForm");
              Stagesform.style.display = "none";
              Stagesform.submit();
+            });
+            </script>
+            </div>
+<div id="Creationdefiche" class="tabcontent">
+<form id="CreationdeficheForm" target="CreationdeficheFrame"  action="/internships/new" method="POST">
+<input type="text" name="extension" value="True" />
+</form><iframe name="CreationdeficheFrame" src="#" width="1200" height="1250">
+               Your browser does not support inline frames.
+            </iframe>
+            
+            <script>
+             $(document).ready(function(){
+             var Creationdeficheform= document.getElementById("CreationdeficheForm");
+             Creationdeficheform.style.display = "none";
+             Creationdeficheform.submit();
+            });
+            </script>
+            </div>
+<div id="Calendrier" class="tabcontent">
+<form id="CalendrierForm" target="CalendrierFrame"  action="/calendar" method="POST">
+<input type="text" name="extension" value="True" />
+</form><iframe name="CalendrierFrame" src="#" width="1200" height="650">
+               Your browser does not support inline frames.
+            </iframe>
+            
+            <script>
+             $(document).ready(function(){
+             var Calendrierform= document.getElementById("CalendrierForm");
+             Calendrierform.style.display = "none";
+             Calendrierform.submit();
             });
             </script>
             </div>{%endblock%}
