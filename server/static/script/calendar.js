@@ -3891,7 +3891,11 @@
                 html += slotSegHtml(event, seg);
             }
     
+
             slotSegmentContainer[0].innerHTML = html; // faster than html()
+            console.log(slotSegmentContainer[0])
+            
+
             eventElements = slotSegmentContainer.children();
             
             // retrieve elements, run through eventRender callback, bind event handlers
@@ -3899,6 +3903,12 @@
                 seg = segs[i];
                 event = seg.event;
                 eventElement = $(eventElements[i]); // faster than eq()
+                
+                console.log(eventElement)
+                console.log(event.id.toString())
+                eventElement.click(function() {
+                    window.location.href= "calendar/event" + "/" + event.id.toString()
+                })
                 triggerRes = trigger('eventRender', event, event, eventElement);
                 if (triggerRes === false) {
                     eventElement.remove();
@@ -4000,6 +4010,14 @@
                 "<div class='fc-event-title'>" +
                 htmlEscape(event.title || '') +
                 "</div>" +
+                
+                "<div>" +
+                htmlEscape("Lieu : " + event.room || '') +
+                "</div>" +
+                "<div>" +
+                htmlEscape("Organisateur : " + event.organisateur || '') +
+                "</div>" +
+                
                 "</div>" +
                 "<div class='fc-event-bg'></div>";
             if (seg.isEnd && isEventResizable(event)) {
