@@ -1,0 +1,210 @@
+{%extends "base_extension.html"%}
+
+{%block body%}
+<link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+{{errors}}
+<div style = "padding-left: 50px;">
+  
+  
+  <form action="{{ url_for('event', id=id) }}"  method="post" class="form-example" >
+    <div class="row">
+    <div class="form-group">
+      <label>Titre de l'événement</label>
+      <input class="form-control" aria-describedby="emailHelp" placeholder="Titre de l'événement" name = "title_event">
+    </div>
+    </div>
+
+    <div class="row">
+    <div class="datepicker date input-group">
+      <label>Date</label>
+      <input placeholder="Choisissez la date" type="text" class="form-control" name="date">
+      <div class="input-group-append"><span class="input-group-text px-4 glyphicon glyphicon-calendar"><i class="fa fa-calendar"></i></span></div>
+    </div>  
+  </div>
+    <script>
+      // Data Picker Initialization
+      $('.datepicker').datepicker({
+          clearBtn: true,
+          format: "dd/mm/yyyy"
+        });
+    </script>
+
+<div class="row">
+  <div class="column">
+  <label>Heure de début</label>
+  <select class="form-select" aria-label="Default select example" name="start_hour">
+    <option selected value="0">00</option>
+    <option value="1">01</option>
+    <option value="2">02</option>
+    <option value="3">03</option>
+    <option value="4">04</option>
+    <option value="5">05</option>
+    <option value="6">06</option>
+    <option value="7">07</option>
+    <option value="8">08</option>
+    <option value="9">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+    <option value="24">24</option>
+  </select>
+  H
+  <select class="form-select" aria-label="Default select example" name="start_min">
+    <option selected value="0">00</option>
+    <option value="5">05</option>
+    <option value="10">10</option>
+    <option value="15">15</option>
+    <option value="20">20</option>
+    <option value="25">25</option>
+    <option value="30">30</option>
+    <option value="35">35</option>
+    <option value="40">40</option>
+    <option value="45">45</option>
+    <option value="50">50</option>
+    <option value="55">55</option>
+  </select>
+  </div>  
+  <div class="column">
+  <label>Heure de fin</label>
+  <select class="form-select" aria-label="Default select example" name="end_hour">
+    <option selected value="0">00</option>
+    <option value="1">01</option>
+    <option value="2">02</option>
+    <option value="3">03</option>
+    <option value="4">04</option>
+    <option value="5">05</option>
+    <option value="6">06</option>
+    <option value="7">07</option>
+    <option value="8">08</option>
+    <option value="9">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+  </select>
+  H
+  <select class="form-select" aria-label="Default select example" name="end_min">
+    <option selected value="0">00</option>
+    <option value="5">05</option>
+    <option value="10">10</option>
+    <option value="15">15</option>
+    <option value="20">20</option>
+    <option value="25">25</option>
+    <option value="30">30</option>
+    <option value="35">35</option>
+    <option value="40">40</option>
+    <option value="45">45</option>
+    <option value="50">50</option>
+    <option value="55">55</option>
+  </select>
+  </div>
+</div>
+
+<div class="row">
+  <div class="form-check">
+  {%for user in users%}
+
+  <input class="form-check-input participant-check" type="checkbox" value="{{user.user_id}}" id="{{user.user_id}}">
+  <label class="form-check-label" style="padding-left: 15px;" for="{{user.user_id}}">
+    {{user.name}}
+  </label>
+
+{%endfor%}
+</div>
+<input value="" class="participants_id" name="participants_id_name" type="hidden">
+
+</div>
+
+  <button type="submit" class="btn btn-primary btn-lg">Valider</button>
+  </form>
+  {{resultat}}
+</div>
+
+<script>
+  $(".participant-check").change(function(event) {
+    //console.log("--------------")
+    res=""
+
+    //retrieve which user is being added or removed
+    checkbox = event.target
+    checked = checkbox.checked
+    participant_id = checkbox.value.toString()
+    already_in = false
+    //console.log("id à modifier")
+    //console.log(participant_id)
+    
+    //retrieve all participants already crossed
+    input = $(".participants_id")
+
+    if (checked) res=participant_id
+
+    //console.log("res before if")
+    //console.log(res)
+
+    if (input.val()!="") {
+      participants = input.val().split(";")
+      //console.log("participants avant for")
+      //console.log(participants)
+      
+      for (var i=0;i<participants.length;i++) {
+          id = participants[i]
+          console.log("boucle for, id = ")
+          console.log(id)
+          if (id == participant_id) {
+            already_in = true
+            if (checked) {
+              if (res == "") {
+                res = res + id
+              }
+              else {
+                res = res + ";" + id
+                  
+              }
+            }
+          }
+          else {
+            if (res == "") {
+              res = res + id
+            }
+            else {
+              res = res + ";" + id
+            }
+            
+          }
+        }
+    
+    }
+
+    input.val(res)
+
+    console.log("participants à présent : " )
+    console.log(input.val())
+
+  })
+
+</script>
+{%endblock%}
+
+
